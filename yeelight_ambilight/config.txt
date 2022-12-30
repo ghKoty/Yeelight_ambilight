@@ -1,0 +1,23 @@
+Bulb framerate(values biggest than 10 not recomended, when give error "yeelight.main.BulbException: A socket error occurred when sending the command." decrease the value (default 5)):
+5
+Bulb IP(ip of Your Yeelight bulb, it's recommended to set static IP adress for bulb, a(ask every time)):
+192.168.0.103
+Pixel position(bl(bottom left), tr(top left), br(bottom right), tr(top right), b(bottom center), t(top center), l(left center), r(right center), c(center)):
+r
+Set pixel X position manualy(a(automatic select) (default a):
+a
+Set pixel Y position manualy(a(automatic select) (default a):
+a
+Can turn off(can lamp turn off if target pixel is black, 1(yes), 0(no) (default 1)):
+1
+Turn off threshold(min brightness value, when lamp turn off, work only when can turn off 1, values: 0-255 (default 10)):
+10
+Change effect(smooth(smoothly), sudden(instantly) (default smooth)):
+smooth
+Change effect duration(in milliseconds, works only when change effect smooth (default 200)):
+200
+Debug(1(yes), 0(no) (default 0)):
+0
+Optimization(if 0(no) always sending packages, if 1(yes) sending only if color changed(may not work correctly) (default 0)):
+0
+EDIT ONLY VARIABLES, DO NOT DELETE LINES OR PROGRAM WILL BROKEN!
