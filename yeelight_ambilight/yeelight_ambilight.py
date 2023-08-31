@@ -5,9 +5,7 @@ import yeelight
 from win32api import GetSystemMetrics
 
 # start get config
-
-config = open(os.getcwd() + "\config.txt")
-config = config.read()
+config = [line.strip() for line in open("config.txt", 'r')] #load config file
 fps = ""
 ip = ""
 pixelPos = ""
@@ -19,191 +17,20 @@ changeEffect = ""
 changeEffectDuration = ""
 debug = ""
 optimization = ""
-
 # end get config
 
 # start read config
-i = 0
-while True: # get start of fps config
-    if config[i] == "\n":
-        i = i + 1
-        break
-    else:
-        i = i + 1
-
-while True: # get fps value
-    if config[i] == "\n":
-        i = i + 1
-        fps = int(fps)
-        break
-    else:
-        fps = fps + config[i]
-        i = i + 1
-
-while True: # get start of ip config
-    if config[i] == "\n":
-        i = i + 1
-        break
-    else:
-        i = i + 1
-
-while True: # get ip value
-    if config[i] == "\n":
-        i = i + 1
-        break
-    else:
-        ip = ip + config[i]
-        i = i + 1
-
-while True: # get start of pixel position config
-    if config[i] == "\n":
-        i = i + 1
-        break
-    else:
-        i = i + 1
-
-while True: # get pixel position value
-    if config[i] == "\n":
-        i = i + 1
-        break
-    else:
-        pixelPos = pixelPos + config[i]
-        i = i + 1
-
-while True: # get start of x pixel position config
-    if config[i] == "\n":
-        i = i + 1
-        break
-    else:
-        i = i + 1
-
-while True: # get x pixel position value
-    if config[i] == "\n":
-        i = i + 1
-        break
-    else:
-        pixelX = pixelX + config[i]
-        i = i + 1
-
-while True: # get start of y pixel position config
-    if config[i] == "\n":
-        i = i + 1
-        break
-    else:
-        i = i + 1
-
-while True: # get y pixel position value
-    if config[i] == "\n":
-        i = i + 1
-        break
-    else:
-        pixelY = pixelY + config[i]
-        i = i + 1
-
-while True: # get start of can turn off config
-    if config[i] == "\n":
-        i = i + 1
-        break
-    else:
-        i = i + 1
-
-while True: # get can turn off value
-    if config[i] == "\n":
-        i = i + 1
-        if canTurnOff == "1":
-            cunTurnOff = True
-        else:
-            canTurnOff = False
-        break
-    else:
-        canTurnOff = canTurnOff + config[i]
-        i = i + 1
-
-while True: # get start of turn off threshold config
-    if config[i] == "\n":
-        i = i + 1
-        break
-    else:
-        i = i + 1
-
-while True: # get turn off threshold value
-    if config[i] == "\n":
-        i = i + 1
-        offThreshold = int(offThreshold)
-        break
-    else:
-        offThreshold = offThreshold + config[i]
-        i = i + 1
-
-while True: # get start of effect config
-    if config[i] == "\n":
-        i = i + 1
-        break
-    else:
-        i = i + 1
-
-while True: # get effect value
-    if config[i] == "\n":
-        i = i + 1
-        break
-    else:
-        changeEffect = changeEffect + config[i]
-        i = i + 1
-
-while True: # get start of effect duration config
-    if config[i] == "\n":
-        i = i + 1
-        break
-    else:
-        i = i + 1
-
-while True: # get effect duration value
-    if config[i] == "\n":
-        i = i + 1
-        changeEffectDuration = int(changeEffectDuration)
-        break
-    else:
-        changeEffectDuration = changeEffectDuration + config[i]
-        i = i + 1
-
-while True: # get start of debug config
-    if config[i] == "\n":
-        i = i + 1
-        break
-    else:
-        i = i + 1
-
-while True: # get debug value
-    if config[i] == "\n":
-        i = i + 1
-        if debug == "1":
-            debug = True
-        else:
-            debug = False
-        break
-    else:
-        debug = debug + config[i]
-        i = i + 1
-
-while True: # get start of optimization config
-    if config[i] == "\n":
-        i = i + 1
-        break
-    else:
-        i = i + 1
-
-while True: # get optimization value
-    if config[i] == "\n":
-        i = i + 1
-        if optimization == "1":
-            optimization = True
-        else:
-            optimization = False
-        break
-    else:
-        optimization = optimization + config[i]
-        i = i + 1
-
+fps = int(config[1])
+ip = config[3]
+pixelPos = config[5]
+pixelX = config[7]
+pixelY = config[9]
+canTurnOff = bool(config[11])
+offThreshold = int(config[13])
+changeEffect = config[15]
+changeEffectDuration = int(config[17])
+debug = bool(config[19])
+optimization = bool(config[21])
 # end read config
 
 if ip == "a":
@@ -215,7 +42,6 @@ bulb.set_color_temp(4000)
 bulb.set_brightness(100)
 
 # start pixel position set
-
 if pixelX == "a": # set pixel X position automatically
     if pixelPos == "bl" or pixelPos == "tl" or pixelPos == "l":
         pixelX = 2
@@ -242,7 +68,6 @@ else: # set pixel X position manualy
     pixelY = int(pixelY)
     if debug:
         print("pixelY set manualy: ", pixelY)
-
 # end pixel position set
 
 r = 0
@@ -279,12 +104,12 @@ while True: # main loop
     if debug:
         print("Input data: r=" + str(r) + ", g=" + str(g) + ", b=" + str(b))
     if oldR != r or oldG != g or oldB != b or not optimization: # check is color changed if optimization=0
-        if maximum(r, g, b) == 0: # check is brightness of pixel less than off threshold
+        if maximum(r, g, b) <= offThreshold: # check is brightness of pixel less than off threshold
             if not canTurnOff:
                 print("seted to 1 1 1 1")
                 bulb.set_rgb(1, 1, 1)
                 bulb.set_brightness(1)
-            elif maximum(r, g, b) <= offThreshold:
+            else:
                 bulb.set_rgb(r, g, b)
                 bulb.set_brightness(int((((((maximum(r, g, b) - 0) * (100 - 0)) / (255 - 0)) + 0))))
                 bulb.turn_off()
